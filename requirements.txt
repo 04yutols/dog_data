@@ -1,0 +1,1 @@
+requestsbeautifulsoup4python-dateutilPyYAMLmojimojipython-dotenv
