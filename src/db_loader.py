@@ -4,7 +4,8 @@ import sys
 import psycopg2
 from psycopg2 import sql
 from dotenv import load_dotenv
-import socket # [追加] ホスト名をIPアドレスに解決するため
+import socket # エラークラスのために残す
+import subprocess # [追加] OSコマンドを実行するため
 
 # .env ファイルの読み込み処理 (変更なし)
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -47,11 +48,11 @@ JSON_KEYS = {
 
 
 def get_db_connection():
-    """データベースへの接続を取得する (Supabase IPv4 Fix v2)"""
+    """データベースへの接続を取得する (Supabase IPv4 Fix v3 - Subprocess)"""
     print(f"[DEBUG] Attempting connection with:")
     print(f"[DEBUG]   DB_HOST (Original): '{DB_HOST}'")
-    print(f"[DEBUG]   DB_NAME: '{DB_NAME}'")
     # ... (他のデバッグログ) ...
+    print(f"[DEBUG]   DB_NAME: '{DB_NAME}'")
     print(f"[DEBUG]   DB_PORT: '{DB_PORT}'")
     print(f"[DEBUG]   DB_USER: '{DB_USER}'")
     print(f"[DEBUG]   DB_PASSWORD: {'******' if DB_PASSWORD else 'None'}")
@@ -60,25 +61,38 @@ def get_db_connection():
         print("エラー: DB接続に必要な環境変数 (DB_HOST, DB_NAME, DB_USER, DB_PASSWORD) が不足しています。")
         sys.exit(1)
 
-    # --- [変更] IPv4 アドレスへの強制解決を、より堅牢な getaddrinfo に変更 ---
+    # --- [変更] OSの力でIPv4アドレスを強制的に解決 ---
     resolved_host_ip = DB_HOST # デフォルトは元のホスト名
     try:
-        # socket.AF_INET は IPv4 のみを強制的に探させる
-        addr_info = socket.getaddrinfo(DB_HOST, DB_PORT, family=socket.AF_INET)
-        # 解決したアドレスリストから最初のIPv4アドレスを取得
-        if addr_info:
-            resolved_host_ip = addr_info[0][4][0]
-            print(f"[DEBUG] ホスト名 '{DB_HOST}' を IPv4 アドレス '{resolved_host_ip}' に強制解決しました。")
-    except socket.gaierror as e:
-        print(f"警告: ホスト名 '{DB_HOST}' のIPv4アドレス解決に失敗。エラー: {e}")
-        print("       元のホスト名で接続を試みますが、IPv6問題が再発する可能性があります。")
-        # 解決に失敗した場合は、`resolved_host_ip` は元の `DB_HOST` のまま
-        pass
+        # Linuxの 'getent hosts' コマンドでホスト名を解決
+        # 'getent ahostsv4' を試すのがより確実かもしれない
+        command = ["getent", "ahostsv4", DB_HOST]
+        result = subprocess.run(command, capture_output=True, text=True, timeout=5)
+        
+        if result.returncode == 0 and result.stdout:
+            # 成功時の出力例: "123.45.67.89    STREAM    db.xxxx.supabase.co"
+            # 最初のIPアドレスを抜き出す
+            resolved_host_ip = result.stdout.split()[0]
+            print(f"[DEBUG] ホスト名 '{DB_HOST}' をOSコマンドでIPv4 '{resolved_host_ip}' に強制解決しました。")
+        else:
+            # getent ahostsv4 が失敗したら、gethostbyname も試す（最後のあがき）
+            print(f"警告: 'getent ahostsv4' でのIPv4解決に失敗。 'gethostbyname' を試みます。")
+            try:
+                resolved_host_ip = socket.gethostbyname(DB_HOST)
+                print(f"[DEBUG] 'gethostbyname' でIPv4 '{resolved_host_ip}' に解決しました。")
+            except socket.gaierror as e:
+                 print(f"警告: 'gethostbyname' も失敗。エラー: {e}")
+                 raise Exception("All IPv4 resolution methods failed.") # 接続失敗を確実にするため例外を発生させる
+                 
+    except Exception as e:
+        print(f"警告: IPv4アドレスの強制解決中にエラーが発生しました。エラー: {e}")
+        print("       元のホスト名で接続を試みますが、IPv6問題が再発する可能性が極めて高いです。")
+        resolved_host_ip = DB_HOST # 最終手段
     # -----------------------------------------------------------------
 
     try:
         conn = psycopg2.connect(
-            host=resolved_host_ip, # [変更] 解決したIPv4アドレス (または元のホスト名) を使用
+            host=resolved_host_ip, # 解決したIPv4アドレス (または元のホスト名) を使用
             dbname=DB_NAME,
             user=DB_USER,
             password=DB_PASSWORD,
@@ -169,7 +183,7 @@ def upsert_data(conn, data):
 # --- main 関数 (変更なし) ---
 def main():
     """メイン処理"""
-    print("データベースローダー (Supabase IPv4 Fix v2) を起動します...")
+    print("データベースローダー (Supabase IPv4 Fix v3) を起動します...")
     connection = get_db_connection()
     if not connection: return
     analysis_data = load_json_data(INPUT_JSON_FILE)
