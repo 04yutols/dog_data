@@ -8,6 +8,7 @@ import socket # [追加] ホスト名をIPアドレスに解決するため
 
 # .env ファイルの読み込み処理 (変更なし)
 script_dir = os.path.dirname(os.path.abspath(__file__))
+# ... (dotenv_path, loaded の定義は変更なし) ...
 project_root = os.path.dirname(script_dir)
 dotenv_path = os.path.join(project_root, '.env')
 loaded = load_dotenv(dotenv_path=dotenv_path, override=True)
@@ -28,6 +29,7 @@ DB_PORT = os.environ.get('DB_PORT', '6543')
 
 # --- テーブル情報 (変更なし) ---
 TABLE_NAME = 'hotel_analysis_results'
+# ... (COLUMNS, JSON_KEYS の定義は変更なし) ...
 COLUMNS = [
     'hotel_name', 'anshin_score_alltime', 'anshin_score_1year', 'total_reviews_alltime',
     'total_reviews_1year', 'sources', 'risk_points_alltime', 'risk_rate_alltime',
@@ -45,10 +47,11 @@ JSON_KEYS = {
 
 
 def get_db_connection():
-    """データベースへの接続を取得する (Supabase IPv4 Fix)"""
+    """データベースへの接続を取得する (Supabase IPv4 Fix v2)"""
     print(f"[DEBUG] Attempting connection with:")
-    print(f"[DEBUG]   DB_HOST: '{DB_HOST}'")
+    print(f"[DEBUG]   DB_HOST (Original): '{DB_HOST}'")
     print(f"[DEBUG]   DB_NAME: '{DB_NAME}'")
+    # ... (他のデバッグログ) ...
     print(f"[DEBUG]   DB_PORT: '{DB_PORT}'")
     print(f"[DEBUG]   DB_USER: '{DB_USER}'")
     print(f"[DEBUG]   DB_PASSWORD: {'******' if DB_PASSWORD else 'None'}")
@@ -57,21 +60,25 @@ def get_db_connection():
         print("エラー: DB接続に必要な環境変数 (DB_HOST, DB_NAME, DB_USER, DB_PASSWORD) が不足しています。")
         sys.exit(1)
 
+    # --- [変更] IPv4 アドレスへの強制解決を、より堅牢な getaddrinfo に変更 ---
+    resolved_host_ip = DB_HOST # デフォルトは元のホスト名
     try:
-        # --- [変更] IPv4 アドレスへの強制解決 ---
-        resolved_host_ip = DB_HOST
-        try:
-            # gethostbyname はホスト名をIPv4アドレスに解決する
-            resolved_host_ip = socket.gethostbyname(DB_HOST)
-            print(f"[DEBUG] ホスト名 '{DB_HOST}' を IPv4 アドレス '{resolved_host_ip}' に解決しました。")
-        except socket.gaierror as e:
-            print(f"警告: ホスト名 '{DB_HOST}' の名前解決に失敗しました。元のホスト名で接続を試みます。エラー: {e}")
-            # 解決に失敗した場合は、元のホスト名で試行 (失敗する可能性が高いが)
-            pass
-        # ------------------------------------
-            
+        # socket.AF_INET は IPv4 のみを強制的に探させる
+        addr_info = socket.getaddrinfo(DB_HOST, DB_PORT, family=socket.AF_INET)
+        # 解決したアドレスリストから最初のIPv4アドレスを取得
+        if addr_info:
+            resolved_host_ip = addr_info[0][4][0]
+            print(f"[DEBUG] ホスト名 '{DB_HOST}' を IPv4 アドレス '{resolved_host_ip}' に強制解決しました。")
+    except socket.gaierror as e:
+        print(f"警告: ホスト名 '{DB_HOST}' のIPv4アドレス解決に失敗。エラー: {e}")
+        print("       元のホスト名で接続を試みますが、IPv6問題が再発する可能性があります。")
+        # 解決に失敗した場合は、`resolved_host_ip` は元の `DB_HOST` のまま
+        pass
+    # -----------------------------------------------------------------
+
+    try:
         conn = psycopg2.connect(
-            host=resolved_host_ip, # [変更] 解決したIPv4アドレスを使用
+            host=resolved_host_ip, # [変更] 解決したIPv4アドレス (または元のホスト名) を使用
             dbname=DB_NAME,
             user=DB_USER,
             password=DB_PASSWORD,
@@ -87,6 +94,7 @@ def get_db_connection():
 
 # --- load_json_data 関数 (変更なし) ---
 def load_json_data(file_path):
+    # ... (関数の中身は変更なし) ...
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -101,6 +109,7 @@ def load_json_data(file_path):
 
 # --- upsert_data 関数 (変更なし) ---
 def upsert_data(conn, data):
+    # ... (関数の中身は変更なし) ...
     if not data:
         print("DBに書き込むデータがありません。")
         return 0
@@ -160,7 +169,7 @@ def upsert_data(conn, data):
 # --- main 関数 (変更なし) ---
 def main():
     """メイン処理"""
-    print("データベースローダー (Supabase IPv4 Fix) を起動します...")
+    print("データベースローダー (Supabase IPv4 Fix v2) を起動します...")
     connection = get_db_connection()
     if not connection: return
     analysis_data = load_json_data(INPUT_JSON_FILE)
