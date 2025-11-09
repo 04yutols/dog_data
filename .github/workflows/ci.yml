@@ -1,0 +1,45 @@
+name: Python CI - Quality Assurance
+
+# トリガー: mainブランチへのpush時、またはmainブランチへのPull Request作成/更新時
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"] # 使用するPythonのバージョンを指定
+
+    steps:
+    - name: Checkout repository # 1. リポジトリをチェックアウト
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }} # 2. Python環境をセットアップ
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies # 3. 依存関係をインストール
+      run: |
+        python -m pip install --upgrade pip
+        # 修正された requirements.txt を使う
+        pip install -r requirements.txt
+        # 'pip install pytest flake8' の行は requirements.txt に含めたので不要
+
+    - name: Lint with flake8 # 4. (推奨) コードスタイルチェック
+      run: |
+        # flake8 src --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 src --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Test with pytest and Coverage # 5. ユニットテスト実行
+      env:
+        # [重要] PYTHONPATH=. を設定して、pytestが 'src' モジュールを見つけられるようにする
+        PYTHONPATH: .
+      run: |
+        # [重要] ルートディレクトリからpytestを実行し、カバレッジも計測
+        pytest --cov=src --cov-report=term-missing --cov-fail-under=80
+        # 'pytest src' ではなく、プロジェクトルートで 'pytest' を実行
