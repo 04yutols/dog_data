@@ -1,1 +1,10 @@
-requestsbeautifulsoup4python-dateutilPyYAMLmojimojipython-dotenvpytest
+requests
+beautifulsoup4
+python-dateutil
+PyYAML
+mojimoji
+python-dotenv
+psycopg2-binary
+pytest
+pytest-cov
+flake8
