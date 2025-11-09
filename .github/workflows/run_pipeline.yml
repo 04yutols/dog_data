@@ -2,7 +2,7 @@ name: Python CD - Daily Data Pipeline
 
 on:
   schedule:
-    - cron: '0 16 * * *' # 毎日 AM 1:00 JST / 16:00 UTC
+    - cron: '0 17 * * *' # 毎日 AM 1:00 JST / 16:00 UTC
   workflow_dispatch: # 手動実行
 
 jobs:
