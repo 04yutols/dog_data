@@ -4,6 +4,7 @@ import sys
 import psycopg2
 from psycopg2 import sql
 from dotenv import load_dotenv
+import socket # [追加] ホスト名をIPアドレスに解決するため
 
 # .env ファイルの読み込み処理 (変更なし)
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -18,13 +19,12 @@ else:
 # --- ファイル設定 (変更なし) ---
 INPUT_JSON_FILE = os.path.join(project_root, 'data/output/analysis_results.json')
 
-# --- DB接続設定 (Supabase対応) ---
-DB_HOST = os.environ.get('DB_HOST') # Supabaseのホスト
-DB_NAME = os.environ.get('DB_NAME') # SupabaseのDB名 (例: postgres)
-DB_USER = os.environ.get('DB_USER') # Supabaseのユーザー (例: postgres)
+# --- DB接続設定 (変更なし) ---
+DB_HOST = os.environ.get('DB_HOST')
+DB_NAME = os.environ.get('DB_NAME')
+DB_USER = os.environ.get('DB_USER')
 DB_PASSWORD = os.environ.get('DB_PASSWORD')
-# [NEW] Supabaseのコネクションプーリング用ポート (Port 6543)
-DB_PORT = os.environ.get('DB_PORT', '6543') # デフォルトを6543に
+DB_PORT = os.environ.get('DB_PORT', '6543')
 
 # --- テーブル情報 (変更なし) ---
 TABLE_NAME = 'hotel_analysis_results'
@@ -45,7 +45,7 @@ JSON_KEYS = {
 
 
 def get_db_connection():
-    """データベースへの接続を取得する (Supabase対応)"""
+    """データベースへの接続を取得する (Supabase IPv4 Fix)"""
     print(f"[DEBUG] Attempting connection with:")
     print(f"[DEBUG]   DB_HOST: '{DB_HOST}'")
     print(f"[DEBUG]   DB_NAME: '{DB_NAME}'")
@@ -58,9 +58,20 @@ def get_db_connection():
         sys.exit(1)
 
     try:
-        # [変更] Supabase (クラウドDB) 接続用に port と sslmode='require' を追加
+        # --- [変更] IPv4 アドレスへの強制解決 ---
+        resolved_host_ip = DB_HOST
+        try:
+            # gethostbyname はホスト名をIPv4アドレスに解決する
+            resolved_host_ip = socket.gethostbyname(DB_HOST)
+            print(f"[DEBUG] ホスト名 '{DB_HOST}' を IPv4 アドレス '{resolved_host_ip}' に解決しました。")
+        except socket.gaierror as e:
+            print(f"警告: ホスト名 '{DB_HOST}' の名前解決に失敗しました。元のホスト名で接続を試みます。エラー: {e}")
+            # 解決に失敗した場合は、元のホスト名で試行 (失敗する可能性が高いが)
+            pass
+        # ------------------------------------
+            
         conn = psycopg2.connect(
-            host=DB_HOST,
+            host=resolved_host_ip, # [変更] 解決したIPv4アドレスを使用
             dbname=DB_NAME,
             user=DB_USER,
             password=DB_PASSWORD,
@@ -71,11 +82,11 @@ def get_db_connection():
         return conn
     except psycopg2.OperationalError as e:
         print(f"エラー: データベース接続に失敗しました。詳細: {e}")
-        print("ヒント: SupabaseのIP許可リスト(Network Restrictions)を確認するか、Connection Pooling (Port 6543) を使用しているか確認してください。")
+        print("ヒント: IPv6/IPv4の接続問題か、Supabaseのネットワーク制限を再確認してください。")
         sys.exit(1)
 
+# --- load_json_data 関数 (変更なし) ---
 def load_json_data(file_path):
-    """JSONファイルからデータを読み込む (変更なし)"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -88,15 +99,13 @@ def load_json_data(file_path):
         print(f"エラー: {file_path} のJSON形式が不正です。詳細: {e}")
         return None
 
+# --- upsert_data 関数 (変更なし) ---
 def upsert_data(conn, data):
-    """データをDBにUPSERTする (変更なし)"""
     if not data:
         print("DBに書き込むデータがありません。")
         return 0
-
     cursor = None
     upserted_count = 0
-
     insert_sql = sql.SQL("INSERT INTO {} ({}) VALUES ({})").format(
         sql.Identifier(TABLE_NAME),
         sql.SQL(', ').join(map(sql.Identifier, COLUMNS)),
@@ -111,11 +120,9 @@ def upsert_data(conn, data):
         insert_sql,
         update_sql_part
     )
-
     try:
         cursor = conn.cursor()
         print(f"{len(data)}件のデータをDBに書き込み開始...")
-
         for hotel_name, analysis_data in data.items():
             values = []
             valid_entry = True
@@ -127,11 +134,9 @@ def upsert_data(conn, data):
                     nested_dict = analysis_data.get(key_info[0], {})
                     value = nested_dict.get(key_info[1])
                 else: value = analysis_data.get(key_info)
-
                 if col == 'sources' and value is not None and not isinstance(value, list):
                      print(f"  [警告] {hotel_name}: 'sources' がリスト形式ではありません。スキップします。 Value: {value}")
                      valid_entry = False; break
-
                 values.append(value)
 
             if valid_entry:
@@ -140,12 +145,11 @@ def upsert_data(conn, data):
                     upserted_count += 1
                 except psycopg2.Error as db_err:
                      print(f"  [DBエラー] {hotel_name}: 書き込み中にエラー。スキップします。 詳細: {db_err}")
-                     conn.rollback() # 個別エラーでもロールバックして次に進む
+                     conn.rollback() 
             
         conn.commit()
         print(f"-> {upserted_count}件のデータの書き込み（UPSERT）が完了しました。")
         return upserted_count
-
     except psycopg2.Error as e:
         print(f"エラー: データベース操作中にエラー。詳細: {e}")
         if conn: conn.rollback()
@@ -153,23 +157,19 @@ def upsert_data(conn, data):
     finally:
         if cursor: cursor.close()
 
+# --- main 関数 (変更なし) ---
 def main():
-    """メイン処理 (変更なし)"""
-    print("データベースローダー (Supabase Edition) を起動します...")
-
+    """メイン処理"""
+    print("データベースローダー (Supabase IPv4 Fix) を起動します...")
     connection = get_db_connection()
     if not connection: return
-
     analysis_data = load_json_data(INPUT_JSON_FILE)
-
     processed_count = 0
     if analysis_data:
         processed_count = upsert_data(connection, analysis_data)
-
     if connection:
         connection.close()
         print("データベース接続を閉じました。")
-
     print(f"\n処理結果: {processed_count}件のホテルデータがDBに正常に書き込まれました。")
 
 if __name__ == "__main__":
