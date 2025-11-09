@@ -1,9 +1,9 @@
 {
   "那須温泉　ホテルエピナール那須": {
     "anshin_score_alltime": 49.4,
-    "anshin_score_1year": 49.5,
+    "anshin_score_1year": 49.8,
     "total_reviews_alltime": 867,
-    "total_reviews_1year": 863,
+    "total_reviews_1year": 854,
     "sources": [
       "jalan",
       "rakuten"
@@ -17,19 +17,19 @@
       "wow_rate": 0.837
     },
     "risk_details_1year": {
-      "total_risk_points": 772,
-      "risk_rate": 0.895
+      "total_risk_points": 730,
+      "risk_rate": 0.855
     },
     "wow_details_1year": {
-      "total_wow_points": 726,
-      "wow_rate": 0.841
+      "total_wow_points": 717,
+      "wow_rate": 0.84
     }
   },
   "亀の井ホテル　喜連川": {
     "anshin_score_alltime": 39.7,
-    "anshin_score_1year": 39.7,
+    "anshin_score_1year": 39.2,
     "total_reviews_alltime": 173,
-    "total_reviews_1year": 173,
+    "total_reviews_1year": 168,
     "sources": [
       "jalan",
       "rakuten"
@@ -44,18 +44,18 @@
     },
     "risk_details_1year": {
       "total_risk_points": 257,
-      "risk_rate": 1.486
+      "risk_rate": 1.53
     },
     "wow_details_1year": {
-      "total_wow_points": 78,
-      "wow_rate": 0.451
+      "total_wow_points": 75,
+      "wow_rate": 0.446
     }
   },
   "ウェルネスの森　那須（共立リゾート）": {
     "anshin_score_alltime": 46.4,
-    "anshin_score_1year": 40.5,
+    "anshin_score_1year": 40.4,
     "total_reviews_alltime": 1586,
-    "total_reviews_1year": 232,
+    "total_reviews_1year": 230,
     "sources": [
       "jalan",
       "rakuten"
@@ -70,18 +70,18 @@
     },
     "risk_details_1year": {
       "total_risk_points": 439,
-      "risk_rate": 1.892
+      "risk_rate": 1.909
     },
     "wow_details_1year": {
       "total_wow_points": 219,
-      "wow_rate": 0.944
+      "wow_rate": 0.952
     }
   },
   "ホテル森の風那須": {
     "anshin_score_alltime": 45.1,
-    "anshin_score_1year": 48.2,
+    "anshin_score_1year": 47.7,
     "total_reviews_alltime": 237,
-    "total_reviews_1year": 73,
+    "total_reviews_1year": 71,
     "sources": [
       "jalan",
       "rakuten"
@@ -96,11 +96,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 31,
-      "risk_rate": 0.425
+      "risk_rate": 0.437
     },
     "wow_details_1year": {
-      "total_wow_points": 18,
-      "wow_rate": 0.247
+      "total_wow_points": 15,
+      "wow_rate": 0.211
     }
   },
   "ホテルフォレストヒルズ那須　～愛犬と旅する大自然のリゾート～": {
@@ -206,9 +206,9 @@
   },
   "ＤＯＧ　ＳＰＡ　ＲＥＳＯＲＴ　アルトピアーノ": {
     "anshin_score_alltime": 45.2,
-    "anshin_score_1year": 52.7,
+    "anshin_score_1year": 52.9,
     "total_reviews_alltime": 225,
-    "total_reviews_1year": 22,
+    "total_reviews_1year": 21,
     "sources": [
       "jalan",
       "rakuten"
@@ -227,14 +227,14 @@
     },
     "wow_details_1year": {
       "total_wow_points": 6,
-      "wow_rate": 0.273
+      "wow_rate": 0.286
     }
   },
   "ホテル東日本宇都宮": {
     "anshin_score_alltime": 47.6,
-    "anshin_score_1year": 47.6,
+    "anshin_score_1year": 47.4,
     "total_reviews_alltime": 131,
-    "total_reviews_1year": 130,
+    "total_reviews_1year": 129,
     "sources": [
       "jalan",
       "rakuten"
@@ -249,11 +249,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 91,
-      "risk_rate": 0.7
+      "risk_rate": 0.705
     },
     "wow_details_1year": {
-      "total_wow_points": 60,
-      "wow_rate": 0.462
+      "total_wow_points": 57,
+      "wow_rate": 0.442
     }
   },
   "愛犬と泊まれるプチホテル 那須温泉 ザ ハートフィールド イン": {
@@ -334,9 +334,9 @@
   },
   "奥日光湯元温泉　奥日光高原ホテル": {
     "anshin_score_alltime": 42.5,
-    "anshin_score_1year": 42.2,
+    "anshin_score_1year": 42.1,
     "total_reviews_alltime": 903,
-    "total_reviews_1year": 110,
+    "total_reviews_1year": 109,
     "sources": [
       "jalan",
       "rakuten"
@@ -351,18 +351,18 @@
     },
     "risk_details_1year": {
       "total_risk_points": 110,
-      "risk_rate": 1.0
+      "risk_rate": 1.009
     },
     "wow_details_1year": {
       "total_wow_points": 24,
-      "wow_rate": 0.218
+      "wow_rate": 0.22
     }
   },
   "亀の井ホテル　塩原　ワンちゃんの宿": {
     "anshin_score_alltime": 42.2,
-    "anshin_score_1year": 42.2,
+    "anshin_score_1year": 42.1,
     "total_reviews_alltime": 180,
-    "total_reviews_1year": 180,
+    "total_reviews_1year": 179,
     "sources": [
       "jalan",
       "rakuten"
@@ -377,11 +377,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 189,
-      "risk_rate": 1.05
+      "risk_rate": 1.056
     },
     "wow_details_1year": {
       "total_wow_points": 48,
-      "wow_rate": 0.267
+      "wow_rate": 0.268
     }
   },
   "ＳｈａｒｅＲｅｓｏｒｔ　あにまる御殿": {
@@ -462,9 +462,9 @@
   },
   "ペットといっしょに貸切温泉　メゾン　ド　ブラン": {
     "anshin_score_alltime": 45.8,
-    "anshin_score_1year": 45.7,
+    "anshin_score_1year": 44.3,
     "total_reviews_alltime": 31,
-    "total_reviews_1year": 30,
+    "total_reviews_1year": 28,
     "sources": [
       "jalan"
     ],
@@ -478,11 +478,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 31,
-      "risk_rate": 1.033
+      "risk_rate": 1.107
     },
     "wow_details_1year": {
-      "total_wow_points": 18,
-      "wow_rate": 0.6
+      "total_wow_points": 15,
+      "wow_rate": 0.536
     }
   },
   "Mimoza Retreat NASU ミモザリトリート那須": {
@@ -512,9 +512,9 @@
   },
   "ホテルラフォーレ那須": {
     "anshin_score_alltime": 39.5,
-    "anshin_score_1year": 39.4,
+    "anshin_score_1year": 39.8,
     "total_reviews_alltime": 133,
-    "total_reviews_1year": 132,
+    "total_reviews_1year": 129,
     "sources": [
       "jalan",
       "rakuten"
@@ -528,19 +528,19 @@
       "wow_rate": 0.226
     },
     "risk_details_1year": {
-      "total_risk_points": 170,
-      "risk_rate": 1.288
+      "total_risk_points": 162,
+      "risk_rate": 1.256
     },
     "wow_details_1year": {
       "total_wow_points": 30,
-      "wow_rate": 0.227
+      "wow_rate": 0.233
     }
   },
   "那須ハイランドパークオフィシャルホテル　ＴＯＷＡピュアコテージ": {
     "anshin_score_alltime": 26.7,
-    "anshin_score_1year": 31.9,
+    "anshin_score_1year": 33.5,
     "total_reviews_alltime": 2232,
-    "total_reviews_1year": 327,
+    "total_reviews_1year": 318,
     "sources": [
       "jalan",
       "rakuten"
@@ -554,12 +554,12 @@
       "wow_rate": 0.558
     },
     "risk_details_1year": {
-      "total_risk_points": 746,
-      "risk_rate": 2.281
+      "total_risk_points": 674,
+      "risk_rate": 2.119
     },
     "wow_details_1year": {
-      "total_wow_points": 153,
-      "wow_rate": 0.468
+      "total_wow_points": 150,
+      "wow_rate": 0.472
     }
   },
   "こころ宿　ＮＡＧＯＭＩ": {
@@ -767,9 +767,9 @@
   },
   "リブマックスリゾート鬼怒川": {
     "anshin_score_alltime": 30.9,
-    "anshin_score_1year": 19.3,
+    "anshin_score_1year": 19.0,
     "total_reviews_alltime": 561,
-    "total_reviews_1year": 105,
+    "total_reviews_1year": 104,
     "sources": [
       "jalan",
       "rakuten"
@@ -784,11 +784,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 343,
-      "risk_rate": 3.267
+      "risk_rate": 3.298
     },
     "wow_details_1year": {
       "total_wow_points": 21,
-      "wow_rate": 0.2
+      "wow_rate": 0.202
     }
   },
   "那須高原　ペットと泊まれる宿　ペンション　ハロハロｉｎｎ那須": {
@@ -819,9 +819,9 @@
   },
   "那須高原　愛犬と泊まれる　森のコテージ　くるみの木": {
     "anshin_score_alltime": 37.6,
-    "anshin_score_1year": 36.9,
+    "anshin_score_1year": 35.0,
     "total_reviews_alltime": 17,
-    "total_reviews_1year": 16,
+    "total_reviews_1year": 14,
     "sources": [
       "jalan"
     ],
@@ -835,18 +835,18 @@
     },
     "risk_details_1year": {
       "total_risk_points": 30,
-      "risk_rate": 1.875
+      "risk_rate": 2.143
     },
     "wow_details_1year": {
       "total_wow_points": 9,
-      "wow_rate": 0.562
+      "wow_rate": 0.643
     }
   },
   "ペット同室宿泊パイオニアの宿　きぬ川国際ホテル": {
     "anshin_score_alltime": 44.6,
-    "anshin_score_1year": 44.4,
+    "anshin_score_1year": 43.6,
     "total_reviews_alltime": 46,
-    "total_reviews_1year": 45,
+    "total_reviews_1year": 44,
     "sources": [
       "jalan"
     ],
@@ -860,11 +860,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 103,
-      "risk_rate": 2.289
+      "risk_rate": 2.341
     },
     "wow_details_1year": {
-      "total_wow_points": 78,
-      "wow_rate": 1.733
+      "total_wow_points": 75,
+      "wow_rate": 1.705
     }
   },
   "ＨＡＭＩＲＵ’Ｓ　ＦＯＲＥＳＴ　ＷＩＴＨ　ＤＯＧ（ハミルズフォレストウィズドッグ）": {
@@ -895,9 +895,9 @@
   },
   "犬と遊べるペンション　ありの塔": {
     "anshin_score_alltime": 55.6,
-    "anshin_score_1year": 56.4,
+    "anshin_score_1year": 56.9,
     "total_reviews_alltime": 16,
-    "total_reviews_1year": 14,
+    "total_reviews_1year": 13,
     "sources": [
       "jalan",
       "rakuten"
@@ -916,14 +916,14 @@
     },
     "wow_details_1year": {
       "total_wow_points": 9,
-      "wow_rate": 0.643
+      "wow_rate": 0.692
     }
   },
   "森の別荘＆ログハウス　ヴィラージュ那須高原": {
     "anshin_score_alltime": 32.3,
-    "anshin_score_1year": 32.3,
+    "anshin_score_1year": 31.5,
     "total_reviews_alltime": 56,
-    "total_reviews_1year": 56,
+    "total_reviews_1year": 55,
     "sources": [
       "jalan"
     ],
@@ -937,11 +937,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 120,
-      "risk_rate": 2.143
+      "risk_rate": 2.182
     },
     "wow_details_1year": {
-      "total_wow_points": 21,
-      "wow_rate": 0.375
+      "total_wow_points": 18,
+      "wow_rate": 0.327
     }
   },
   "ペットと泊まれるコテージ　塩原グリーンビレッジ": {
@@ -1023,9 +1023,9 @@
   },
   "ペット連れ専用のホテル　アニマーレ　プレミアムin那須": {
     "anshin_score_alltime": 48.5,
-    "anshin_score_1year": 48.5,
+    "anshin_score_1year": 48.3,
     "total_reviews_alltime": 13,
-    "total_reviews_1year": 13,
+    "total_reviews_1year": 12,
     "sources": [
       "jalan"
     ],
@@ -1039,18 +1039,18 @@
     },
     "risk_details_1year": {
       "total_risk_points": 8,
-      "risk_rate": 0.615
+      "risk_rate": 0.667
     },
     "wow_details_1year": {
       "total_wow_points": 6,
-      "wow_rate": 0.462
+      "wow_rate": 0.5
     }
   },
   "リブマックスリゾート川治（旧名：源泉の宿　らんりょう）": {
     "anshin_score_alltime": 4.3,
-    "anshin_score_1year": 4.1,
+    "anshin_score_1year": 3.3,
     "total_reviews_alltime": 197,
-    "total_reviews_1year": 196,
+    "total_reviews_1year": 189,
     "sources": [
       "jalan"
     ],
@@ -1063,12 +1063,12 @@
       "wow_rate": 0.152
     },
     "risk_details_1year": {
-      "total_risk_points": 930,
-      "risk_rate": 4.745
+      "total_risk_points": 910,
+      "risk_rate": 4.815
     },
     "wow_details_1year": {
-      "total_wow_points": 30,
-      "wow_rate": 0.153
+      "total_wow_points": 27,
+      "wow_rate": 0.143
     }
   },
   "東急バケーションズ那須": {
@@ -1098,9 +1098,9 @@
   },
   "ホテルウェリィスミヨシ": {
     "anshin_score_alltime": 46.0,
-    "anshin_score_1year": 45.2,
+    "anshin_score_1year": 45.1,
     "total_reviews_alltime": 248,
-    "total_reviews_1year": 42,
+    "total_reviews_1year": 41,
     "sources": [
       "jalan",
       "rakuten"
@@ -1115,11 +1115,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 32,
-      "risk_rate": 0.762
+      "risk_rate": 0.78
     },
     "wow_details_1year": {
       "total_wow_points": 12,
-      "wow_rate": 0.286
+      "wow_rate": 0.293
     }
   },
   "Ｎｅｎｎ　ＮＡＳＵＫＯＵＧＥＮ": {
@@ -1456,7 +1456,7 @@
     "anshin_score_alltime": 48.8,
     "anshin_score_1year": 49.4,
     "total_reviews_alltime": 129,
-    "total_reviews_1year": 50,
+    "total_reviews_1year": 48,
     "sources": [
       "rakuten"
     ],
@@ -1470,18 +1470,18 @@
     },
     "risk_details_1year": {
       "total_risk_points": 24,
-      "risk_rate": 0.48
+      "risk_rate": 0.5
     },
     "wow_details_1year": {
       "total_wow_points": 21,
-      "wow_rate": 0.42
+      "wow_rate": 0.438
     }
   },
   "Ｒａｋｕｔｅｎ　ＳＴＡＹ　ＶＩＬＬＡ　鬼怒川リバーサイド": {
     "anshin_score_alltime": 42.3,
-    "anshin_score_1year": 44.6,
+    "anshin_score_1year": 43.8,
     "total_reviews_alltime": 96,
-    "total_reviews_1year": 54,
+    "total_reviews_1year": 52,
     "sources": [
       "rakuten"
     ],
@@ -1495,18 +1495,18 @@
     },
     "risk_details_1year": {
       "total_risk_points": 44,
-      "risk_rate": 0.815
+      "risk_rate": 0.846
     },
     "wow_details_1year": {
-      "total_wow_points": 15,
-      "wow_rate": 0.278
+      "total_wow_points": 12,
+      "wow_rate": 0.231
     }
   },
   "Ｒａｋｕｔｅｎ　ＳＴＡＹ　ＶＩＬＬＡ　那須": {
     "anshin_score_alltime": 40.4,
-    "anshin_score_1year": 37.6,
+    "anshin_score_1year": 37.5,
     "total_reviews_alltime": 279,
-    "total_reviews_1year": 97,
+    "total_reviews_1year": 96,
     "sources": [
       "rakuten"
     ],
@@ -1520,11 +1520,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 141,
-      "risk_rate": 1.454
+      "risk_rate": 1.469
     },
     "wow_details_1year": {
       "total_wow_points": 21,
-      "wow_rate": 0.216
+      "wow_rate": 0.219
     }
   },
   "那須温泉　ヴィラージュ那須高原": {
@@ -1679,9 +1679,9 @@
   },
   "森のコテージ　くるみの木": {
     "anshin_score_alltime": 55.3,
-    "anshin_score_1year": 55.6,
+    "anshin_score_1year": 56.0,
     "total_reviews_alltime": 17,
-    "total_reviews_1year": 16,
+    "total_reviews_1year": 15,
     "sources": [
       "rakuten"
     ],
@@ -1699,7 +1699,7 @@
     },
     "wow_details_1year": {
       "total_wow_points": 9,
-      "wow_rate": 0.562
+      "wow_rate": 0.6
     }
   },
   "プライベートグランピング｜ＮＡＧＯＭＩ　ＣＡＭＰ那須": {
@@ -2254,9 +2254,9 @@
   },
   "那須温泉　ペット＆スパホテル　那須ワン": {
     "anshin_score_alltime": 46.4,
-    "anshin_score_1year": 45.5,
+    "anshin_score_1year": 45.0,
     "total_reviews_alltime": 271,
-    "total_reviews_1year": 11,
+    "total_reviews_1year": 10,
     "sources": [
       "rakuten"
     ],
@@ -2270,11 +2270,11 @@
     },
     "risk_details_1year": {
       "total_risk_points": 8,
-      "risk_rate": 0.727
+      "risk_rate": 0.8
     },
     "wow_details_1year": {
       "total_wow_points": 3,
-      "wow_rate": 0.273
+      "wow_rate": 0.3
     }
   },
   "塩原温泉　ペットと泊まれるホテル　ホテルフォレスタ": {

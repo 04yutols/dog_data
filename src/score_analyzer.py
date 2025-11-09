@@ -2,13 +2,11 @@ import json
 import yaml
 import mojimoji  # 半角/全角変換ライブラリ
 import re       # 正規表現ライブラリ
-from datetime import datetime, timedelta # [追加] 日付比較のため
+from datetime import datetime, timedelta
 
 # --- ファイル設定 ---
 INPUT_FILE = "../data/processed/hotel_review_data.json"
-# [変更] 出力ファイルのパス
 OUTPUT_FILE = "../data/output/analysis_results.json"
-# [変更] 設定ファイルのパス
 CONFIG_FILE = "../config/config.yml"
 
 # --- [正規化用] 除去する接頭辞/接尾辞のパターン (最終版) ---
@@ -31,17 +29,35 @@ PREFIX_SUFFIX_PATTERNS = [
 PREFIX_SUFFIX_REGEX = re.compile(r'|'.join(PREFIX_SUFFIX_PATTERNS))
 
 def normalize_name(name):
-    """【v3.2 最終版】ホテル名を正規化"""
+    """
+    【v3.2 Final Fix】ホテル名を正規化（すっぴん化）する関数。
+    バグ修正: 記号除去を強化。
+    """
     if not name: return ""
+    
     normalized = mojimoji.han_to_zen(name, kana=True, ascii=True, digit=True).lower()
     normalized = re.sub(r'[（\(][^（）()]*[）\)]', '', normalized)
-    symbols_to_remove = '・＆～★＊！？／♪☆　・＆~★*!?/♪☆ \'ー-'
+    
+    # --- [修正] 記号除去リストにハイフンと両方のアポストロフィを追加 ---
+    symbols_to_remove = '・＆～★＊！？／♪☆　・＆~★*!?/♪☆-' # 長音符 'ー' は除去しない
+    symbols_to_remove += ' '  # 半角スペース
+    symbols_to_remove += '’' # 特殊アポストロフィ
+    symbols_to_remove += '\'' # 通常アポストロフィ
+    symbols_to_remove += '-'  # ハイフン
     normalized = ''.join(c for c in normalized if c not in symbols_to_remove)
-    normalized = re.sub(r'\s+', '', normalized)
-    for _ in range(3):
+    # -----------------------------------------------------------------
+    
+    # [修正] 空白除去を先に実行
+    normalized = re.sub(r'\s+', '', normalized) 
+    
+    for _ in range(3): 
         prev_normalized = normalized
         normalized = PREFIX_SUFFIX_REGEX.sub('', normalized)
         if normalized == prev_normalized: break
+    
+    # [修正] カタカナは全角のまま、英数のみ半角に戻す
+    normalized = mojimoji.zen_to_han(normalized, ascii=True, digit=True, kana=False) 
+
     return normalized
 
 def calculate_score(reviews_list, score_mapping, fatal_risks, wow_factors):
@@ -50,7 +66,6 @@ def calculate_score(reviews_list, score_mapping, fatal_risks, wow_factors):
     """
     total_reviews = len(reviews_list)
     if total_reviews == 0:
-        # [修正] レビューがない場合も8個の値を返す (スコア50.0、他は0や空)
         return 50.0, 0, {}, {}, 0.0, 0.0, 0, 0 # score, total_reviews, risk_counts, wow_counts, risk_rate, wow_rate, risk_points, wow_points
 
     risk_counts = {category: 0 for category in fatal_risks.keys()}
@@ -66,21 +81,22 @@ def calculate_score(reviews_list, score_mapping, fatal_risks, wow_factors):
             if category in found_categories_in_this_review: continue
             for keyword in keywords:
                 if keyword in review_text:
+                    score_value = score_mapping.get(category)
+                    if score_value is None: continue 
+
                     if category in risk_counts: risk_counts[category] += 1
                     elif category in wow_counts: wow_counts[category] += 1
                     found_categories_in_this_review.add(category)
                     break
 
-    total_risk_points = sum(risk_counts[cat] * abs(score_mapping.get(cat, 0)) for cat in fatal_risks)
-    total_wow_points = sum(wow_counts[cat] * score_mapping.get(cat, 0) for cat in wow_factors)
-    risk_rate = total_risk_points / total_reviews
-    wow_rate = total_wow_points / total_reviews
+    total_risk_points = sum(risk_counts[cat] * abs(score_mapping.get(cat, 0)) for cat in fatal_risks if score_mapping.get(cat) is not None)
+    total_wow_points = sum(wow_counts[cat] * score_mapping.get(cat, 0) for cat in wow_factors if score_mapping.get(cat) is not None)
+    
+    risk_rate = (total_risk_points / total_reviews) if total_reviews > 0 else 0
+    wow_rate = (total_wow_points / total_reviews) if total_reviews > 0 else 0
     final_score = 50 - (risk_rate * 10) + (wow_rate * 10)
 
-    risk_points_sum = total_risk_points
-    wow_points_sum = total_wow_points
-
-    return round(final_score, 1), total_reviews, risk_counts, wow_counts, round(risk_rate, 3), round(wow_rate, 3), risk_points_sum, wow_points_sum
+    return round(final_score, 1), total_reviews, risk_counts, wow_counts, round(risk_rate, 3), round(wow_rate, 3), total_risk_points, total_wow_points
 
 
 def main():
@@ -166,12 +182,10 @@ def main():
                  except (ValueError, TypeError):
                       continue
 
-        # calculate_score はレビューがなくても8個の値を返すようになった
         score_1yr, total_1yr, risks_1yr_counts, wows_1yr_counts, risk_rate_1yr, wow_rate_1yr, total_risk_points_1yr, total_wow_points_1yr = calculate_score(
             one_year_reviews, SCORE_MAPPING, FATAL_RISKS, WOW_FACTORS
         )
 
-        # 結果を格納
         analysis_results[representative_name] = {
             "anshin_score_alltime": score_all,
             "anshin_score_1year": score_1yr,

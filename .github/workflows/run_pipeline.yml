@@ -1,0 +1,36 @@
+name: Python CD - Daily Data Pipeline
+
+on:
+  schedule:
+    - cron: '0 16 * * *' # 毎日 AM 1:00 JST / 16:00 UTC
+  workflow_dispatch: # 手動実行
+
+jobs:
+  run_full_pipeline:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # [追加] psycopg2-binary と python-dotenv を requirements.txt に含めること
+        pip install -r requirements.txt
+
+    - name: Run Full Data Pipeline
+      env:
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_PORT: ${{ secrets.DB_PORT }} # [NEW] DB_PORT も Secrets から渡す
+      run: |
+        cd src
+        python run_pipeline.py
